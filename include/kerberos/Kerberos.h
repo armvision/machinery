@@ -22,7 +22,6 @@
 #include "machinery/Machinery.h"
 #include "Guard.h"
 #include "document.h" // rapidjson
-#include "capture/Stream.h"
 #include "easylogging++.h"
 
 namespace kerberos
@@ -58,7 +57,7 @@ namespace kerberos
             Cloud * cloud;
             Machinery * machinery;
             Capture * capture;
-            Stream * stream;
+            BaseStream * stream;
             pthread_t m_streamThread;
             pthread_mutex_t m_streamLock;
             pthread_t m_ioThread;

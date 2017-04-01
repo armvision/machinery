@@ -223,7 +223,7 @@ namespace kerberos
         // ------------------
         // Initialize stream
         
-        stream = new Stream();
+        stream = Factory<BaseStream>::getInstance()->create(settings.at("stream"));
         stream->configureStream(settings);
         startStreamThread();
     }

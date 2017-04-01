@@ -5,8 +5,8 @@
 
     set(KERBEROS_SRC
         cloud/Cloud.cpp
+        capture/BaseStream.cpp
         capture/Capture.cpp
-        capture/Stream.cpp
         capture/Image.cpp
         machinery/Machinery.cpp
         machinery/condition/Condition.cpp
@@ -32,6 +32,8 @@
         capture/USBCamera.cpp
         capture/IPCamera.cpp
         capture/VideoCapture.cpp
+        capture/Stream.cpp
+        capture/WebRTCStream.cpp
         machinery/condition/Time.cpp
         machinery/condition/Enabled.cpp
         machinery/algorithm/DifferentialCollins.cpp

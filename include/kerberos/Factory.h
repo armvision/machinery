@@ -24,6 +24,7 @@
 #include "Helper.h"
 #include "cloud/Cloud.h"
 #include "capture/Capture.h"
+#include "capture/BaseStream.h"
 #include "machinery/condition/Condition.h"
 #include "machinery/algorithm/Algorithm.h"
 #include "machinery/expositor/Expositor.h"
@@ -86,6 +87,12 @@ namespace kerberos
 
     template <const char * Alias, typename Class>
     const char * CloudCreator<Alias, Class>::ID = Factory<Cloud>::getInstance()->registerClass(Alias, &CloudCreator<Alias, Class>::create);
+
+    // --------------------------------
+    // Registration of stream classes
+
+    template <const char * Alias, typename Class>
+    const char * StreamCreator<Alias, Class>::ID = Factory<BaseStream>::getInstance()->registerClass(Alias, &StreamCreator<Alias, Class>::create);
 
     // --------------------------------
     // Registration of capture classes

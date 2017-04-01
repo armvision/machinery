@@ -15,20 +15,11 @@
 //
 /////////////////////////////////////////////////////
 
-#include "Factory.h"
-#include "capture/Image.h"
-
 #ifndef __Stream_H_INCLUDED__   // if Stream.h hasn't been included yet...
 #define __Stream_H_INCLUDED__   // #define this so the compiler knows it has been included
 
-#include <unistd.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/ioctl.h>
+#include "capture/BaseStream.h"
+
 #define PORT        unsigned short
 #define SOCKET    int
 #define HOSTENT  struct hostent
@@ -40,7 +31,8 @@
 
 namespace kerberos
 {
-    class Stream
+    char StreamName[] = "Stream";
+    class Stream : public StreamCreator<StreamName, Stream>
     {
         std::map<int, int> packetsSend;
         std::vector<SOCKET> clients;
@@ -68,18 +60,15 @@ namespace kerberos
             FD_ZERO( &master );
         }
 
-        ~Stream() 
-        {
-            release();
-        }
+        virtual ~Stream(){};
 
+        void setup(kerberos::StringMap & settings);
         void configureStream(StringMap & settings);
         bool release();
         bool open();
         bool isOpened();
         bool connect();
         void write(Image image);
-        double wait;
     };
 }
 #endif

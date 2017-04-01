@@ -3,6 +3,10 @@
 namespace kerberos
 {
 
+    void Stream::setup(kerberos::StringMap &settings)
+    {
+        configureStream(settings);
+    }
     // ----------------------------------
     // Configure stream thread settings
 
