@@ -27,7 +27,7 @@ namespace kerberos {
         virtual ~BaseStream(){};
 
         virtual void setup(kerberos::StringMap & settings) = 0;
-        virtual void configureStream(StringMap &settings) = 0;
+        virtual void configureStreams(StringMap &settings) = 0;
         virtual bool release() = 0;
         virtual bool open() = 0;
         virtual bool isOpened() = 0;

@@ -1,20 +1,23 @@
 #include "capture/WebRTCStream.h"
+#include "api.h"
 
 namespace kerberos
 {
     void WebRTCStream::setup(kerberos::StringMap & settings)
     {
-        configureStream(settings);
+        configureStreams(settings);
     }
     // ----------------------------------
     // Configure stream thread settings
 
-    void WebRTCStream::configureStream(StringMap & settings)
+    void WebRTCStream::configureStreams(StringMap & settings)
     {
         //read url from settings
         m_signallingUrl = settings.at("streams.webrtc.signallingUrl");
         m_enabled = (settings.at("streams.webrtc.enabled") == "true");
         int fps = std::atoi(settings.at("streams.Mjpg.fps").c_str());
+
+        configureStream("turn:numb.viagenie.ca", "ahmetmermerkaya@gmail.com", "21236161", "ws://localhost:8080");
 
         wait = 1. / fps;
     }
@@ -24,6 +27,7 @@ namespace kerberos
         //release webrtc here
 
         LINFO << "Stream: Succesfully closed streaming";
+        releaseRTC();
 
         return false;
     }
@@ -35,8 +39,7 @@ namespace kerberos
 
             //open webrtc here
             //LINFO << "Stream: Configured stream on port " << helper::to_string(m_streamPort) << " with quality: " << helper::to_string(m_quality);
-
-            return true;
+            return openRTC();
         }
 
         return false;
@@ -44,7 +47,7 @@ namespace kerberos
 
     bool WebRTCStream::isOpened()
     {
-        return true;
+        return isRTCOpened();
     }
 
     bool WebRTCStream::connect()
@@ -65,8 +68,12 @@ namespace kerberos
             cv::Mat frame = image.getImage();
             if(frame.cols > 0 && frame.rows > 0)
             {
-                //webrtc onFrame here
+                if (isRTCOpened()) {
+                    writeRTC(frame);
+                }
             }
+
+
         }
         catch(cv::Exception & ex){}
     }

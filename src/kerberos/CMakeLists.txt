@@ -3,6 +3,12 @@
 #   - library is linked with the main binary
 #   and test binary
 
+set(WEBRTCLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/webrtc/include/)
+set(WEBRTCLIB_LIB_DIR ${CMAKE_BINARY_DIR}/webrtc/lib/)
+include_directories(${WEBRTCLIB_INCLUDE_DIR})
+set(PROJECT_LINK_LIBS libwebsocket_lib.dylib)
+link_directories(${WEBRTCLIB_LIB_DIR})
+
     set(KERBEROS_SRC
         cloud/Cloud.cpp
         capture/BaseStream.cpp
@@ -82,6 +88,6 @@
 # Create a library of the KERBEROS_SRC files
 
     add_library(KERBEROS_CORE STATIC ${KERBEROS_SRC})
-    target_link_libraries(KERBEROS_CORE ${KERBEROS_LIBRARIES})
+    target_link_libraries(KERBEROS_CORE ${KERBEROS_LIBRARIES} ${PROJECT_LINK_LIBS})
     add_dependencies(KERBEROS_CORE ${KERBEROS_DEPENDENCIES})
     set(KERBEROS_CORE_LIBRARY ${KERBEROS_CORE_LIBRARY} KERBEROS_CORE PARENT_SCOPE)

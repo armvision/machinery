@@ -5,12 +5,12 @@ namespace kerberos
 
     void Stream::setup(kerberos::StringMap &settings)
     {
-        configureStream(settings);
+        configureStreams(settings);
     }
     // ----------------------------------
     // Configure stream thread settings
 
-    void Stream::configureStream(StringMap & settings)
+    void Stream::configureStreams(StringMap & settings)
     {
         //read port from settings
         int enabled = (settings.at("streams.Mjpg.enabled") == "true");

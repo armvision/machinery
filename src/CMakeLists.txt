@@ -24,6 +24,16 @@
     FILE(GLOB CONFIG_FILES ${CMAKE_SOURCE_DIR}/config/*)
     FILE(GLOB SCRIPTS ${CMAKE_SOURCE_DIR}/scripts/*)
     FILE(GLOB LOG_FILE ${CMAKE_SOURCE_DIR}/logs/log.stash)
+# -----------------------------------------
+#Webrtc
+
+set(WEBRTCLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/webrtc/include/)
+set(WEBRTCLIB_LIB_DIR ${CMAKE_BINARY_DIR}/webrtc/lib/)
+include_directories(${WEBRTCLIB_INCLUDE_DIR})
+set(PROJECT_LINK_LIBS libwebsocket_lib.dylib)
+link_directories(${WEBRTCLIB_LIB_DIR})
+
+
 
 # ----------------------------------------------
 # Executable + define linking libraries
@@ -50,7 +60,7 @@
     endif()
 
     add_dependencies(kerberosio rerun ${KERBEROS_DEPENDENCIES})
-    target_link_libraries(kerberosio ${KERBEROS_CORE_LIBRARY} ${KERBEROS_LIBRARIES})
+    target_link_libraries(kerberosio ${KERBEROS_CORE_LIBRARY} ${KERBEROS_LIBRARIES} ${PROJECT_LINK_LIBS})
 
 # -----------------------------------------
 # Write variables to parent CMakeLists.txt

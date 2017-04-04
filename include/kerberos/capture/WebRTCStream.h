@@ -32,7 +32,7 @@ namespace kerberos
             virtual ~WebRTCStream(){};
 
             void setup(kerberos::StringMap & settings);
-            void configureStream(StringMap & settings);
+            void configureStreams(StringMap & settings);
             bool release();
             bool open();
             bool isOpened();
