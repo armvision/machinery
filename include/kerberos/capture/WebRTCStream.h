@@ -21,6 +21,9 @@ namespace kerberos
 
         bool m_enabled;
         std::string m_signallingUrl;
+        std::string m_turnserver;
+        std::string m_turnserver_username;
+        std::string m_turnserver_password;
 
         public:
 

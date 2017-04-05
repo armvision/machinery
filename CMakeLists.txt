@@ -1,6 +1,7 @@
 cmake_minimum_required( VERSION 2.8.3 )
 project(Kerberos)
 
+MESSAGE( STATUS "CMAKE_BINARY_DIR:         " ${CMAKE_BINARY_DIR} )
 # ----------------------------------------------
 # Check if compiling on the raspberry pi
 	
@@ -22,7 +23,7 @@ project(Kerberos)
 # ----------------------------------------------
 # Enable tests
 
-	set(TESTS_ENABLED 1)
+	set(TESTS_ENABLED 0)
 	if(TESTS_ENABLED)
 		include(CTest)
 	endif()

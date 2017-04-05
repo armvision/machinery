@@ -13,11 +13,13 @@ namespace kerberos
     void WebRTCStream::configureStreams(StringMap & settings)
     {
         //read url from settings
-        m_signallingUrl = settings.at("streams.webrtc.signallingUrl");
-        m_enabled = (settings.at("streams.webrtc.enabled") == "true");
-        int fps = std::atoi(settings.at("streams.Mjpg.fps").c_str());
-
-        configureStream("turn:numb.viagenie.ca", "ahmetmermerkaya@gmail.com", "21236161", "ws://localhost:8080");
+        m_signallingUrl = settings.at("streams.WebRTCStream.signallingUrl");
+        m_enabled = (settings.at("streams.WebRTCStream.enabled") == "true");
+        int fps = std::atoi(settings.at("streams.WebRTCStream.fps").c_str());
+        m_turnserver = settings.at("streams.WebRTCStream.turnserver");
+        m_turnserver_username = settings.at("streams.WebRTCStream.turnserverUserName");
+        m_turnserver_password = settings.at("streams.WebRTCStream.turnserverPassword");
+        configureStream(m_turnserver, m_turnserver_username, m_turnserver_password, m_signallingUrl);
 
         wait = 1. / fps;
     }
