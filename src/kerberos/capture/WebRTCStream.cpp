@@ -13,14 +13,23 @@ namespace kerberos
     void WebRTCStream::configureStreams(StringMap & settings)
     {
         //read url from settings
+        LINFO << "configureStreams";
         m_signallingUrl = settings.at("streams.WebRTCStream.signallingUrl");
+	LINFO << "configureStreams m_signallingUrl";
         m_enabled = (settings.at("streams.WebRTCStream.enabled") == "true");
+        LINFO << "configureStreams m_enabled";
         int fps = std::atoi(settings.at("streams.WebRTCStream.fps").c_str());
+        LINFO << "configureStreams fps";
         m_turnserver = settings.at("streams.WebRTCStream.turnserver");
+        LINFO << "configureStreams m_turnserver";
         m_turnserver_username = settings.at("streams.WebRTCStream.turnserverUserName");
+        LINFO << "configureStreams m_turnserver_username";
         m_turnserver_password = settings.at("streams.WebRTCStream.turnserverPassword");
-        configureStream(m_turnserver, m_turnserver_username, m_turnserver_password, m_signallingUrl);
-
+        LINFO << "configureStreams m_turnserver_password";
+        LINFO << "configureStreams end";
+        configureStream(const_cast<char*> (m_turnserver.c_str()), const_cast<char*> (m_turnserver_username.c_str()),                   const_cast<char*> (m_turnserver_password.c_str()),const_cast<char*> ( m_signallingUrl.c_str()));
+        setupRTC();
+        LINFO << "configureStream webrtc";
         wait = 1. / fps;
     }
 
@@ -41,6 +50,7 @@ namespace kerberos
 
             //open webrtc here
             //LINFO << "Stream: Configured stream on port " << helper::to_string(m_streamPort) << " with quality: " << helper::to_string(m_quality);
+	    LINFO << "openRTC";
             return openRTC();
         }
 
@@ -49,6 +59,7 @@ namespace kerberos
 
     bool WebRTCStream::isOpened()
     {
+        LINFO << "isRTCOpened";
         return isRTCOpened();
     }
 
@@ -67,10 +78,12 @@ namespace kerberos
             //if(clients.size()==0) return;
 
             // Encode the image
+            LINFO << "write";
             cv::Mat frame = image.getImage();
             if(frame.cols > 0 && frame.rows > 0)
             {
                 if (isRTCOpened()) {
+                    LINFO << "writeRTC(frame)";
                     writeRTC(frame);
                 }
             }

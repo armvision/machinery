@@ -6,7 +6,7 @@
 set(WEBRTCLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/webrtc/include/)
 set(WEBRTCLIB_LIB_DIR ${CMAKE_BINARY_DIR}/webrtc/lib/)
 include_directories(${WEBRTCLIB_INCLUDE_DIR})
-set(PROJECT_LINK_LIBS libwebsocket_lib.dylib)
+set(PROJECT_LINK_LIBS libwebsocket_lib.so)
 link_directories(${WEBRTCLIB_LIB_DIR})
 
     set(KERBEROS_SRC

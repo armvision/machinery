@@ -190,7 +190,7 @@ namespace kerberos
     {
         // -----------------------
         // Stop stream and capture
-        
+        LINFO << "configureCapture";
         if(stream != 0)
         {
             LINFO << "Stopping streaming";
@@ -222,7 +222,7 @@ namespace kerberos
         
         // ------------------
         // Initialize stream
-        
+        LINFO << "Initialize stream"+settings.at("stream");
         stream = Factory<BaseStream>::getInstance()->create(settings.at("stream"));
         stream->configureStreams(settings);
         startStreamThread();
@@ -256,8 +256,8 @@ namespace kerberos
     void * streamContinuously(void * self)
     {
         Kerberos * kerberos = (Kerberos *) self;
-
-        while(kerberos->stream->isOpened())
+	LINFO << "streamContinuously";
+        while(true)
         {
             try
             {
@@ -270,12 +270,16 @@ namespace kerberos
                     {
                         image.rotate(kerberos->capture->m_angle);
                     }
-                    kerberos->stream->write(image);
+                    if(kerberos->stream->isOpened()){
+                       kerberos->stream->write(image);
+                    }
                 }
                 
                 usleep(kerberos->stream->wait * 1000 * 1000); // sleep x microsec.
             }
-            catch(cv::Exception & ex){}
+            catch(cv::Exception & ex){
+			LINFO << "Exception in stream";
+		}
         }
     }
     
@@ -283,13 +287,15 @@ namespace kerberos
     {
         // ------------------------------------------------
         // Start a new thread that streams MJPEG's continuously.
-        
+        LINFO << "startStreamThread";
         if(stream != 0)
         {
             //if stream object just exists try to open configured stream port
             stream->open();
+            LINFO << "stream opened";
         }
         
+        LINFO << "streamContinuously"; 
         pthread_create(&m_streamThread, NULL, streamContinuously, this);
     }
     
