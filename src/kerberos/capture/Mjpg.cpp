@@ -1,16 +1,16 @@
-#include "capture/Stream.h"
+#include "capture/Mjpg.h"
 
 namespace kerberos
 {
 
-    void Stream::setup(kerberos::StringMap &settings)
+    void Mjpg::setup(kerberos::StringMap &settings)
     {
         configureStreams(settings);
     }
     // ----------------------------------
     // Configure stream thread settings
 
-    void Stream::configureStreams(StringMap & settings)
+    void Mjpg::configureStreams(StringMap & settings)
     {
         //read port from settings
         int enabled = (settings.at("streams.Mjpg.enabled") == "true");
@@ -34,7 +34,7 @@ namespace kerberos
        }
     }
 
-    bool Stream::release()
+    bool Mjpg::release()
     {
         for(int i = 0; i < clients.size(); i++)
         {
@@ -51,12 +51,12 @@ namespace kerberos
         }
         sock = (INVALID_SOCKET);
 
-        LINFO << "Stream: Succesfully closed streaming";
+        LINFO << "Mjpg: Succesfully closed streaming";
         
         return false;
     }
 
-    bool Stream::open()
+    bool Mjpg::open()
     {
         if(m_enabled)
         {
@@ -77,7 +77,7 @@ namespace kerberos
             
             while(bind(sock, (SOCKADDR*) &address, sizeof(SOCKADDR_IN)) == SOCKET_ERROR)
             {
-                LERROR << "Stream: couldn't bind sock";
+                LERROR << "Mjpg: couldn't bind sock";
                 release();
                 usleep(1000*10000);
                 sock = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -85,14 +85,14 @@ namespace kerberos
             
             while(listen(sock, 2) == SOCKET_ERROR)
             {
-                LERROR << "Stream: couldn't listen on sock";
+                LERROR << "Mjpg: couldn't listen on sock";
                 usleep(1000*10000);
             }
             
             FD_SET(sock, &master);    
 
 
-            LINFO << "Stream: Configured stream on port " << helper::to_string(m_streamPort) << " with quality: " << helper::to_string(m_quality);
+            LINFO << "Mjpg: Configured stream on port " << helper::to_string(m_streamPort) << " with quality: " << helper::to_string(m_quality);
             
             return true;
         }
@@ -100,12 +100,12 @@ namespace kerberos
         return false;
     }
 
-    bool Stream::isOpened() 
+    bool Mjpg::isOpened() 
     {
         return sock != INVALID_SOCKET; 
     }
 
-    bool Stream::connect()
+    bool Mjpg::connect()
     {
         fd_set rread = master;
         struct timeval to = {0,m_timeout};
@@ -120,8 +120,8 @@ namespace kerberos
             
         if (client == SOCKET_ERROR)
         {
-            LERROR << "Stream: couldn't accept connection on sock";
-            LERROR << "Stream: reopening master sock";
+            LERROR << "Mjpg: couldn't accept connection on sock";
+            LERROR << "Mjpg: reopening master sock";
             release();
             open();
             return false;
@@ -144,7 +144,7 @@ namespace kerberos
             "Content-Type: multipart/x-mixed-replace; boundary=mjpegstream\r\n"
             "\r\n",0);
 
-        LINFO << "Stream: opening socket for new client";
+        LINFO << "Mjpg: opening socket for new client";
         
         clients.push_back(client);
         packetsSend[client] = 0;
@@ -152,7 +152,7 @@ namespace kerberos
         return true;
     }
     
-    void Stream::write(Image image)
+    void Mjpg::write(Image image)
     {
         try
         {

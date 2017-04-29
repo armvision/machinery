@@ -1,5 +1,5 @@
 //
-//  Class: Stream
+//  Class: Mjpg
 //  Description: Streaming images from Capture Devices as MJPEG.
 //  Created:     15/02/2015
 //  Author:      Cédric Verstraeten
@@ -31,8 +31,8 @@
 
 namespace kerberos
 {
-    char StreamName[] = "Stream";
-    class Stream : public StreamCreator<StreamName, Stream>
+    char MjpgName[] = "Mjpg";
+    class Mjpg : public StreamCreator<MjpgName, Mjpg>
     {
         std::map<int, int> packetsSend;
         std::vector<SOCKET> clients;
@@ -55,12 +55,12 @@ namespace kerberos
 
     public:
 
-        Stream() : sock(INVALID_SOCKET), m_timeout(10), m_quality(70)
+        Mjpg() : sock(INVALID_SOCKET), m_timeout(10), m_quality(70)
         {
             FD_ZERO( &master );
         }
 
-        virtual ~Stream(){};
+        virtual ~Mjpg(){};
 
         void setup(kerberos::StringMap & settings);
         void configureStreams(StringMap & settings);

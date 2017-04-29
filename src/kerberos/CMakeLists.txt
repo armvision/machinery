@@ -38,7 +38,7 @@ link_directories(${WEBRTCLIB_LIB_DIR})
         capture/USBCamera.cpp
         capture/IPCamera.cpp
         capture/VideoCapture.cpp
-        capture/Stream.cpp
+        capture/Mjpg.cpp
         capture/WebRTCStream.cpp
         machinery/condition/Time.cpp
         machinery/condition/Enabled.cpp
