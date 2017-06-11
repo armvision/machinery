@@ -7,5 +7,14 @@
     	<quality type="number">75</quality>
     	<fps type="number">5</fps>
     </Mjpg>
+    
+    <WebRTCStream>
+       <enabled type="bool">true</enabled>
+       <fps type="number">20</fps>
+       <signallingUrl type="text">ws://localhost:8080</signallingUrl>
+       <turnserver type="text">stun:stun.l.google.com:19302</turnserver> <!-- write stun or turn server -->
+       <turnserverUserName type="text"></turnserverUserName>
+       <turnserverPassword type="text"></turnserverPassword>
+   </WebRTCStream>
 
 </streams>
