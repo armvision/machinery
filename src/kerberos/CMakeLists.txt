@@ -3,11 +3,17 @@
 #   - library is linked with the main binary
 #   and test binary
 
-set(WEBRTCLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/webrtc/include/)
-set(WEBRTCLIB_LIB_DIR ${CMAKE_BINARY_DIR}/webrtc/lib/)
-include_directories(${WEBRTCLIB_INCLUDE_DIR})
-set(PROJECT_LINK_LIBS libwebsocket_lib.so)
-link_directories(${WEBRTCLIB_LIB_DIR})
+    SET(WEBRTCLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/webrtc/include/)
+    SET(WEBRTCLIB_LIB_DIR ${CMAKE_BINARY_DIR}/webrtc/lib/)
+    include_directories(${WEBRTCLIB_INCLUDE_DIR})
+    if(APPLE)
+        SET(PROJECT_LINK_LIBS libwebsocket_lib.dylib)
+    elseif(${IS_RASPBERRYPI})
+        SET(PROJECT_LINK_LIBS libwebsocket_lib.so)
+    else()
+        SET(PROJECT_LINK_LIBS libwebsocket_lib.so)
+    endif()
+    link_directories(${WEBRTCLIB_LIB_DIR})
 
     set(KERBEROS_SRC
         cloud/Cloud.cpp
