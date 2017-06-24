@@ -194,6 +194,7 @@ namespace kerberos
         if(stream != 0)
         {
             LINFO << "Stopping streaming";
+            stream->release();
             stopStreamThread();
             delete stream;
             stream = 0;
@@ -256,11 +257,16 @@ namespace kerberos
     void * streamContinuously(void * self)
     {
         Kerberos * kerberos = (Kerberos *) self;
+        int period = kerberos->stream->wait * 1000 * 1000; // period in micro seconds
 	LINFO << "streamContinuously";
         while(true)
         {
             try
             {
+            	struct timespec time;
+
+            	clock_gettime(CLOCK_REALTIME, &time);
+            	int lasttime = round(time.tv_nsec / 1.0e3); //convert to micro seconds
                 kerberos->stream->connect();
                 
                 if(kerberos->capture->isOpened())
@@ -275,7 +281,12 @@ namespace kerberos
                     }
                 }
                 
-                usleep(kerberos->stream->wait * 1000 * 1000); // sleep x microsec.
+                clock_gettime(CLOCK_REALTIME, &time);
+                int now = round(time.tv_nsec / 1.0e3); // ;convert to microsecond
+                int waittime = period + lasttime - now;
+                if (waittime > 0) {
+                	usleep(waittime); // sleep x microsec.
+                }
             }
             catch(cv::Exception & ex){
 			LINFO << "Exception in stream";

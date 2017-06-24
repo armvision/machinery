@@ -50,7 +50,6 @@ namespace kerberos
 
             //open webrtc here
             //LINFO << "Stream: Configured stream on port " << helper::to_string(m_streamPort) << " with quality: " << helper::to_string(m_quality);
-	    LINFO << "openRTC";
             return openRTC();
         }
 
@@ -59,7 +58,6 @@ namespace kerberos
 
     bool WebRTCStream::isOpened()
     {
-        LINFO << "isRTCOpened";
         return isRTCOpened();
     }
 
@@ -78,12 +76,10 @@ namespace kerberos
             //if(clients.size()==0) return;
 
             // Encode the image
-            LINFO << "write";
             cv::Mat frame = image.getImage();
             if(frame.cols > 0 && frame.rows > 0)
             {
                 if (isRTCOpened()) {
-                    LINFO << "writeRTC(frame)";
                     writeRTC(frame);
                 }
             }
